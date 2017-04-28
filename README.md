@@ -24,9 +24,13 @@ Sample Analytics application
 We will create a sample application that ingests a data file containing dummy data about credit card defaulters from a fictitious credit card company. This data contains information pertaining to the gender, marital status, age, education and other relevant information of each credit card user.
 
 Based on the data provided, our application will answer some basic question like below:
+
 •	How many of the credit card defaulters were Male?
+
 •	Do marital status and level of education effect the likelihood?
+
 •	How many of the current customer are likely to default in the next month?
+
   
 
 
