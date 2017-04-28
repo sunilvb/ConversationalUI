@@ -22,8 +22,8 @@ exports.handler = function( event, context ) {
         if (IntentName === "GetNewFactIntent") {
 
             var post_options = {
-                host:  'jsonplaceholder.typicode.com',
-				path: '/users/1'
+                host:  '<your host>',
+				path: '/gender'
             };
                     
 			var post_req = http.request(post_options, function(res) {
