@@ -19,14 +19,14 @@ exports.handler = function( event, context ) {
     } else {
         var IntentName = event.request.intent.name;
 
-        if (IntentName === "GetNewFactIntent") {
+        if (IntentName === "GetForecast") {
 
             var post_options = {
-                host:  '<your host>',
-				path: '/gender'
+                host:  '<YOUR HOST NAME>',
+		path: '/forecast'
             };
                     
-			var post_req = http.request(post_options, function(res) {
+		var post_req = http.request(post_options, function(res) {
                 res.setEncoding('utf8');
                 var returnData = "";
                 res.on('data', function (chunk) {
@@ -35,10 +35,7 @@ exports.handler = function( event, context ) {
                 
                 res.on('end', function () {
                     
-                    pop = JSON.parse(returnData).name;
-
-                    say = "The population of " + myState + " is " + pop;
-
+                    say = JSON.parse(returnData).text;
                     // add the state to a session.attributes array
                     if (!sessionAttributes.requestList) {
                         sessionAttributes.requestList = [];
@@ -56,8 +53,13 @@ exports.handler = function( event, context ) {
             
 
         } 
-        else if (IntentName === "GetGenderType"){
-            say = "You asked for Gender Type. Thanks for playing!";
+        else if (IntentName === "GetGenderSplit"){
+            say = "You asked for stats based on Gender Type. Thanks for playing!";
+            shouldEndSession = true;
+            context.succeed({sessionAttributes: sessionAttributes, response: buildSpeechletResponse(say, shouldEndSession) });
+        }
+        else if (IntentName === "GetEduSplit"){
+            say = "You asked for stats based on education and marital status. Thanks for playing!";
             shouldEndSession = true;
             context.succeed({sessionAttributes: sessionAttributes, response: buildSpeechletResponse(say, shouldEndSession) });
         }
