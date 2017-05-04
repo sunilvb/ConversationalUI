@@ -57,7 +57,7 @@ public class Application {
 		/*--------------------------------------------------------------------------
 		Load Data
 		--------------------------------------------------------------------------*/
-		Dataset<Row> ccRawDf = spSession.read().option("header", "true").csv("data/credit-card-default-1000.csv");
+		Dataset<Row> ccRawDf = spSession.read().option("header", "true").csv("<Your Data File Location>");
 		System.out.println("Raw Data : ");
 		ccRawDf.show(5);
 		ccRawDf.printSchema();
