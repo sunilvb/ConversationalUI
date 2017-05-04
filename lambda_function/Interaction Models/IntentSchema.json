@@ -1,0 +1,22 @@
+{
+  "intents": [
+    {
+      "intent": "GetEduSplit"
+    },
+    {
+      "intent": "GetGenderSplit"
+    },
+    {
+      "intent": "GetForecast"
+    },
+    {
+      "intent": "AMAZON.HelpIntent"
+    },
+    {
+      "intent": "AMAZON.StopIntent"
+    },
+    {
+      "intent": "AMAZON.CancelIntent"
+    }
+  ]
+}
