@@ -28,14 +28,20 @@ import org.apache.spark.sql.types.DataTypes;
 import org.apache.spark.sql.types.StructField;
 import org.apache.spark.sql.types.StructType;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
 public class Application {
 
 	public static void main(String[] args) {
 
+		Logger.getLogger("org").setLevel(Level.ERROR);
+		Logger.getLogger("akka").setLevel(Level.ERROR);
+		
 		SparkSession spSession = MySparkUtil.getSession();
 
-		final String USER = "<DB USER>";
-		final String PASS = "<DB USER PASSWORD>";
+		final String USER = "root";
+		final String PASS = "sunder74";
 		String jdbcUrl = "jdbc:mysql://localhost:3306/sakila";
 		String table1 = "table1";
 		String table2 = "table2";
@@ -53,11 +59,12 @@ public class Application {
 		--------------------------------------------------------------------------*/
 		dropTable(jdbcUrl,USER,PASS,table1);
 		dropTable(jdbcUrl,USER,PASS,table2);
+		dropTable(jdbcUrl,USER,PASS,"table3");
 		
 		/*--------------------------------------------------------------------------
 		Load Data
 		--------------------------------------------------------------------------*/
-		Dataset<Row> ccRawDf = spSession.read().option("header", "true").csv("<Your Data File Location>");
+		Dataset<Row> ccRawDf = spSession.read().option("header", "true").csv("data/cc-default-data.csv");
 		System.out.println("Raw Data : ");
 		ccRawDf.show(5);
 		ccRawDf.printSchema();
@@ -283,6 +290,9 @@ public class Application {
 		// Predict on test data
 		Dataset<Row> dtRaw = dtModel.transform(testData);
 		Dataset<Row> dtPredictions = predConverter.transform(labelConverter.transform(dtRaw));
+	
+		
+		
 		System.out.println("========================Sunil=======================================");
 		System.out.println("Decision Tree output : ");
 		System.out.println("dtPredictions.count() = " + dtPredictions.count());
@@ -293,7 +303,8 @@ public class Application {
 		double dtAccuracy = evaluator.evaluate(dtPredictions);
 		System.out.println("Decision Trees Accuracy = " + Math.round(dtAccuracy * 100) + " %");
 		
-
+		dtPredictions.drop("rawPrediction","probability","features","labelStr","predictionStr").write().mode("error").jdbc(jdbcUrl, "table3", dbProperties);
+		
 	}
 
 	public static void dropTable(String db, String user, String pwd, String table) {
@@ -315,7 +326,7 @@ public class Application {
 			String sql = "DROP TABLE " + table;
 
 			stmt.executeUpdate(sql);
-			System.out.println("Table  deleted in given database...");
+			System.out.println("Table  deleted in given database... " + table);
 		} catch (SQLException se) {
 			// Handle errors for JDBC
 			se.printStackTrace();
