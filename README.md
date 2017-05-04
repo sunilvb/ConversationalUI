@@ -1,5 +1,7 @@
 Conversational UI for Enterprise Information Systems
 
+Please refer to the article : https://www.linkedin.com/pulse/conversational-interface-enterprise-information-sunil-vishnubhotla
+
 Past couple of year has seen the emergence of mature conversational platforms. These platforms can understand the natural language spoken by humans while interacting with underlying software applications or passing on the messages in a translated format to the underlying software as commands. 
 
 A conversational interface or UI is any human interaction with a machine that mimics a conversation with a real human being. It is the ability to transmit input to a machine or a computer vial natural spoken commands that are no different from interacting with a real person. The result is a desired output from the machine or software without having to click a few buttons or icons on a screen.
