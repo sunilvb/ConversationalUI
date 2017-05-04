@@ -1,0 +1,9 @@
+GetEduSplit tell me the stats by education
+GetEduSplit stats by education
+GetEduSplit say stats by education
+GetGenderSplit tell me the stats by gender
+GetGenderSplit stats by gender
+GetGenderSplit say stats by gender
+GetForecast tell me the forecast
+GetForecast say the forecast
+GetForecast what is the forecast 
