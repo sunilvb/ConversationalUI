@@ -41,10 +41,11 @@ public class Application {
 		SparkSession spSession = MySparkUtil.getSession();
 
 		final String USER = "root";
-		final String PASS = "sunder74";
+		final String PASS = "your password";
 		String jdbcUrl = "jdbc:mysql://localhost:3306/sakila";
 		String table1 = "table1";
 		String table2 = "table2";
+		String table3 = "table3";
 		
 		Properties dbProperties = new Properties();
 		try {
@@ -55,11 +56,11 @@ public class Application {
 		}
 		
 		/*--------------------------------------------------------------------------
-		Drop MySQL Table
+		Drop MySQL Tables
 		--------------------------------------------------------------------------*/
 		dropTable(jdbcUrl,USER,PASS,table1);
 		dropTable(jdbcUrl,USER,PASS,table2);
-		dropTable(jdbcUrl,USER,PASS,"table3");
+		dropTable(jdbcUrl,USER,PASS,table3);
 		
 		/*--------------------------------------------------------------------------
 		Load Data
@@ -303,7 +304,7 @@ public class Application {
 		double dtAccuracy = evaluator.evaluate(dtPredictions);
 		System.out.println("Decision Trees Accuracy = " + Math.round(dtAccuracy * 100) + " %");
 		
-		dtPredictions.drop("rawPrediction","probability","features","labelStr","predictionStr").write().mode("error").jdbc(jdbcUrl, "table3", dbProperties);
+		dtPredictions.drop("rawPrediction","probability","features","labelStr","predictionStr").write().mode("error").jdbc(jdbcUrl, table3, dbProperties);
 		
 	}
 
