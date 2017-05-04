@@ -2,9 +2,9 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>ConversationalUI</groupId>
   <artifactId>ConversationalUI</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <name>spark-big-data-analytics-code</name>
-  <description>Code examples</description>
+  <version>1.0</version>
+  <name>conversational-ui-sample-code</name>
+  <description>conversational-ui-sample-code</description>
   
   <dependencies>
   	<dependency>
