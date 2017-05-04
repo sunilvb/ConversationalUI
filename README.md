@@ -41,7 +41,7 @@ The second is a Spring Boot JAR file that can be executed to expose a set of web
 Please note, although the sample shows how to process a data file and present it as a web service, it is neither optimized for production use nor exemplifies the coding best practices. The sample code is located here.   
 To run the application, build source using maven and use java command to execute main class in the jar file. Make sure you have Java 1.8 installed on your system.
 
-java -cp <jar file name> <class file name>
+java -cp jarfilename.jar your.package.Application
 
 AWS Lambda Interface
 
@@ -64,7 +64,9 @@ We will associate the following Utterances to the Intents:
 https://github.com/sunilvb/ConversationalUI/blob/master/lambda_function/Interaction%20Models/SampleUtterances.txt
 
 Our Alexa skill kit will respond to verbal commands and question as shown below:
+
 User => Alexa, tell me the forecast.
+
 Alexa => Based on the current month’s data, there are 4 defaulters forecasted for next month.
 
 All the files needed for the Skill setup are located on github. Also refer to the AWS tutorial on setting up custom Alexa Skills here.
