@@ -19,7 +19,7 @@ Fortunately, adding conversational interfaces to existing business services that
 
 Below is the general architecture for our sample application:
  
-
+https://github.com/sunilvb/ConversationalUI/blob/master/Conversational_UI.jpg
 
 Sample Analytics application
 
