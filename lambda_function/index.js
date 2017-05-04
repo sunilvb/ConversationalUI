@@ -1,33 +1,180 @@
-var http = require('http');
+/**
+ * Sample for calling REST endpoints for the Alexa Lambda. 
+ * This is part of the source code samples for the blog : https://www.linkedin.com/pulse/conversational-interface-enterprise-information-sunil-vishnubhotla
+ * 
+ * Author : Sunil Vishnubhotla
+ *
+ */
 
-exports.handler = function( event, context ) {
-    var say = "";
-    var shouldEndSession = false;
-    var sessionAttributes = {};
-    var myState = "";
-    var pop = 0;
-    var rank = 0;
 
-    if (event.session.attributes) {
-        sessionAttributes = event.session.attributes;
+exports.handler = function (event, context) {
+    try {
+        console.log("event.session.application.applicationId=" + event.session.application.applicationId);
+
+        /**
+         * Uncomment this if statement and populate with your skill's application ID to
+         * prevent someone else from configuring a skill that sends requests to this function.
+         */
+        /*
+        if (event.session.application.applicationId !== "amzn1.echo-sdk-ams.app.[unique-value-here]") {
+             context.fail("Invalid Application ID");
+         }
+        */
+
+        if (event.session.new) {
+            onSessionStarted({ requestId: event.request.requestId }, event.session);
+        }
+
+        if (event.request.type === "LaunchRequest") {
+            onLaunch(event.request,
+                     event.session,
+                     function callback(sessionAttributes, speechletResponse) {
+                         context.succeed(buildResponse(sessionAttributes, speechletResponse));
+                     });
+        } else if (event.request.type === "IntentRequest") {
+            onIntent(event.request,
+                     event.session,
+                     function callback(sessionAttributes, speechletResponse) {
+                         context.succeed(buildResponse(sessionAttributes, speechletResponse));
+                     });
+        } else if (event.request.type === "SessionEndedRequest") {
+            onSessionEnded(event.request, event.session);
+            context.succeed();
+        }
+    } catch (e) {
+        context.fail("Exception: " + e);
     }
+};
 
-    if (event.request.type === "LaunchRequest") {
-        say = "Welcome to State Pop!  Say the name of a U.S. State.";
-        context.succeed({sessionAttributes: sessionAttributes, response: buildSpeechletResponse(say, shouldEndSession) });
+/**
+ * Called when the session starts.
+ */
+function onSessionStarted(sessionStartedRequest, session) {
+    console.log("onSessionStarted requestId=" + sessionStartedRequest.requestId
+                + ", sessionId=" + session.sessionId);
+}
 
-    } else {
-        var IntentName = event.request.intent.name;
+/**
+ * Called when the user launches the skill without specifying what they want.
+ */
+function onLaunch(launchRequest, session, callback) {
+    console.log("onLaunch requestId=" + launchRequest.requestId
+                + ", sessionId=" + session.sessionId);
 
-        if (IntentName === "GetForecast") {
+    // Dispatch to your skill's launch.
+    getWelcomeResponse(callback);
+}
 
-            var post_options = {
-                host:  '<YOUR HOST NAME>',
-		path: '/forecast'
-            };
-                    
-		var post_req = http.request(post_options, function(res) {
-                res.setEncoding('utf8');
+/**
+ * Called when the user specifies an intent for this skill.
+ */
+function onIntent(intentRequest, session, callback) {
+    console.log("onIntent requestId=" + intentRequest.requestId
+                + ", sessionId=" + session.sessionId);
+
+    var intent = intentRequest.intent,
+        intentName = intentRequest.intent.name;
+
+    // Dispatch to your skill's intent handlers
+    if ("GetEduSplit" === intentName) {
+		
+		// http get
+		webServiceCall("/edustats",function (response) {
+
+        var speechOutput = response;
+        var shouldEndSession = true;
+
+        callback({}, buildSpeechletResponse("Conversation UI Example", speechOutput, null, shouldEndSession));
+
+        });
+	
+		
+    } else if("GetGenderSplit" === intentName){
+        
+
+		// http get
+		webServiceCall("/gender",function (response) {
+
+        var speechOutput = response;
+        var shouldEndSession = true;
+
+        callback({}, buildSpeechletResponse("Conversation UI Example", speechOutput, null, shouldEndSession));
+
+        });
+	
+
+    }
+	else if("GetForecast" === intentName){
+        
+
+		// http get
+		webServiceCall("/forecast",function (response) {
+
+        var speechOutput = response;
+        var shouldEndSession = true;
+
+        callback({}, buildSpeechletResponse("Conversation UI Example", speechOutput, null, shouldEndSession));
+
+        });
+	
+
+    }else {
+        throw "Invalid intent";
+    }
+	
+}
+
+
+/**
+ * Called when the user ends the session.
+ * Is not called when the skill returns shouldEndSession=true.
+ */
+function onSessionEnded(sessionEndedRequest, session) {
+    console.log("onSessionEnded requestId=" + sessionEndedRequest.requestId
+                + ", sessionId=" + session.sessionId);
+    // Add cleanup logic here
+}
+
+// --------------- Functions that control the skill's behavior -----------------------
+
+function getWelcomeResponse(callback) {
+    // If we wanted to initialize the session to have some attributes we could add those here.
+
+    var sessionAttributes = {};
+    var repromptText = null;
+
+    var cardTitle = "Conversation UI Example";
+
+    // http get
+    webServiceCall("/users/1",function (response) {
+
+        var speechOutput = response;
+        var shouldEndSession = true;
+
+        callback(sessionAttributes,
+                 buildSpeechletResponse(cardTitle, speechOutput, repromptText, shouldEndSession));
+
+    });
+
+
+
+}
+
+function webServiceCall(callPath, response) {
+
+    var http = require('http');
+    var options = {
+        host: '<Your Host Name>',
+        port: 80,
+        path: callPath,
+        agent: false
+    };
+
+    http.get(options, function (res) {
+        console.log("Response: " + res.statusCode);
+        //response(res.statusCode);
+		
+		 res.setEncoding('utf8');
                 var returnData = "";
                 res.on('data', function (chunk) {
                     returnData += chunk;
@@ -35,65 +182,46 @@ exports.handler = function( event, context ) {
                 
                 res.on('end', function () {
                     
-                    say = JSON.parse(returnData).text;
-                    // add the state to a session.attributes array
-                    if (!sessionAttributes.requestList) {
-                        sessionAttributes.requestList = [];
-                    }
-                    sessionAttributes.requestList.push(myState);
-
-                    // This line concludes the lambda call.  Move this line to within any asynchronous callbacks that return and use data.
-                    context.succeed({sessionAttributes: sessionAttributes, response: buildSpeechletResponse(say, shouldEndSession) });
+                    response(JSON.parse(returnData).text);
+                    
+                    
 
                 });
-                
-            });
-               
-            post_req.end();
-            
+		
+    }).on('error', function (e) {
+        console.log("Error message: " + e.message);
+    });
 
-        } 
-        else if (IntentName === "GetGenderSplit"){
-            say = "You asked for stats based on Gender Type. Thanks for playing!";
-            shouldEndSession = true;
-            context.succeed({sessionAttributes: sessionAttributes, response: buildSpeechletResponse(say, shouldEndSession) });
-        }
-        else if (IntentName === "GetEduSplit"){
-            say = "You asked for stats based on education and marital status. Thanks for playing!";
-            shouldEndSession = true;
-            context.succeed({sessionAttributes: sessionAttributes, response: buildSpeechletResponse(say, shouldEndSession) });
-        }
-        else if (IntentName === "AMAZON.StopIntent" || IntentName === "AMAZON.CancelIntent") {
-            say = "You asked for " + sessionAttributes.requestList.toString() + ". Thanks for playing!";
-            shouldEndSession = true;
-            context.succeed({sessionAttributes: sessionAttributes, response: buildSpeechletResponse(say, shouldEndSession) });
+}
 
 
-        } else if (IntentName === "AMAZON.HelpIntent" ) {
-            say = "Just say the name of a U.S. State, such as Massachusetts or California."
-            context.succeed({sessionAttributes: sessionAttributes, response: buildSpeechletResponse(say, shouldEndSession) });
+// --------------- Helpers that build all of the responses -----------------------
 
-        }
-    }
-};
-
-function buildSpeechletResponse(say, shouldEndSession) {
+function buildSpeechletResponse(title, output, repromptText, shouldEndSession) {
     return {
         outputSpeech: {
-            type: "SSML",
-            ssml: "<speak>" + say + "</speak>"
-        },
-        reprompt: {
-            outputSpeech: {
-                type: "SSML",
-                ssml: "<speak>Please try again. " + say + "</speak>"
-            }
+            type: "PlainText",
+            text: output
         },
         card: {
             type: "Simple",
-            title: "My Card Title",
-            content: "My Card Content, displayed on the Alexa App or alexa.amazon.com"
+            title: title,
+            content: output
+        },
+        reprompt: {
+            outputSpeech: {
+                type: "PlainText",
+                text: repromptText
+            }
         },
         shouldEndSession: shouldEndSession
-    };
+    }
+}
+
+function buildResponse(sessionAttributes, speechletResponse) {
+    return {
+        version: "1.0",
+        sessionAttributes: sessionAttributes,
+        response: speechletResponse
+    }
 }
