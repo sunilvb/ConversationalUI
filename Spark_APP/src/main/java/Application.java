@@ -31,14 +31,11 @@ import org.apache.spark.sql.types.StructType;
 public class Application {
 
 	public static void main(String[] args) {
-/*
-		Logger.getLogger("org").setLevel(Level.ERROR);
-		Logger.getLogger("akka").setLevel(Level.ERROR);
-		JavaSparkContext spContext = SparkConnection.getContext();*/
+
 		SparkSession spSession = MySparkUtil.getSession();
 
-		final String USER = "root";
-		final String PASS = "sunder74";
+		final String USER = "<DB USER>";
+		final String PASS = "<DB USER PASSWORD>";
 		String jdbcUrl = "jdbc:mysql://localhost:3306/sakila";
 		String table1 = "table1";
 		String table2 = "table2";
