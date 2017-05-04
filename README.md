@@ -4,7 +4,7 @@ Please refer to the article : https://www.linkedin.com/pulse/conversational-inte
 
 Past couple of year has seen the emergence of mature conversational platforms. These platforms can understand the natural language spoken by humans while interacting with underlying software applications or passing on the messages in a translated format to the underlying software as commands. 
 
-A conversational interface or UI is any human interaction with a machine that mimics a conversation with a real human being. It is the ability to transmit input to a machine or a computer vial natural spoken commands that are no different from interacting with a real person. The result is a desired output from the machine or software without having to click a few buttons or icons on a screen.
+A conversational interface or UI is any human interaction with a machine that mimics a conversation with a real human being. It is the ability to transmit input to a machine or a computer via natural spoken commands that are no different from interacting with a real person. The result is a desired output from the machine or software without having to click a few buttons or icons on a screen.
 Typically, there are two ways of interacting with conversational platforms. One is by typing a plain and meaningful sentence and passing it as input to the platform so that it can perform the desired task and produce the results based on what was asked. The other, a more natural way, is by having a real conversation.   
 
 In this blog we will see how one can utilize conversational platforms for performing analytical operations and presenting the results in a spoken language to the end user. 
