@@ -23,7 +23,7 @@ Fortunately, adding conversational interfaces to existing business services that
 4.	Use conversations to interact with our web-service
 
 Below is the general architecture for our sample application:
- 
+![alt text](Conversational_UI.jpg) 
 https://github.com/sunilvb/ConversationalUI/blob/master/Conversational_UI.jpg
 
 Sample Analytics Application
