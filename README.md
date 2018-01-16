@@ -92,7 +92,17 @@ https://github.com/sunilvb/ConversationalUI/blob/master/lambda_function/Interact
 The next thing we do is glue our Intents with Utterances. This helps the Alexa to recognize the phrases that a user utters and associate them with specific Intents and thereby to the underlying functionality and response that is generated as a result of the phrase uttered. As you may have guessed, the utterances are tied to a specific language.
 
 We will associate the following Utterances to the Intents:
-
+```
+GetEduSplit tell me the stats by education
+GetEduSplit stats by education
+GetEduSplit say stats by education
+GetGenderSplit tell me the stats by gender
+GetGenderSplit stats by gender
+GetGenderSplit say stats by gender
+GetForecast tell me the forecast
+GetForecast say the forecast
+GetForecast what is the forecast 
+```
 https://github.com/sunilvb/ConversationalUI/blob/master/lambda_function/Interaction%20Models/SampleUtterances.txt
 
 Our Alexa skill kit will respond to verbal commands and question as shown below:
