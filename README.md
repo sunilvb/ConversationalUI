@@ -61,6 +61,32 @@ A Skill’s Interaction Model consists of Intents that respond to a user’s req
 
 We will define our Intent Schema like below:
 
+
+```
+{
+  "intents": [
+    {
+      "intent": "GetEduSplit"
+    },
+    {
+      "intent": "GetGenderSplit"
+    },
+    {
+      "intent": "GetForecast"
+    },
+    {
+      "intent": "AMAZON.HelpIntent"
+    },
+    {
+      "intent": "AMAZON.StopIntent"
+    },
+    {
+      "intent": "AMAZON.CancelIntent"
+    }
+  ]
+}
+
+```
 https://github.com/sunilvb/ConversationalUI/blob/master/lambda_function/Interaction%20Models/IntentSchema.json
 
 The next thing we do is glue our Intents with Utterances. This helps the Alexa to recognize the phrases that a user utters and associate them with specific Intents and thereby to the underlying functionality and response that is generated as a result of the phrase uttered. As you may have guessed, the utterances are tied to a specific language.
